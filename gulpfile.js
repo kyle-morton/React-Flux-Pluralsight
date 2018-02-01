@@ -16,6 +16,7 @@ var config = {
     paths: {
         html: './src/*.html', //in src directory, any file that has html extension
         js: './src/**/*.js',
+        images: './src/images/*',
         css: [
             'node_modules/bootstrap/dist/css/bootstrap.min.css',
             'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
@@ -71,6 +72,16 @@ gulp.task('lint', function() {
         .pipe(lint.format());
 });
 
+gulp.task('images', function () {
+    gulp.src(config.paths.images)
+        .pipe(gulp.dest(config.paths.dist + '/images'))
+        .pipe(connect.reload());
+
+    //publish favicon
+    gulp.src('./src/favicon.ico')
+        .pipe(gulp.dest(config.paths.dist));
+});
+
 //watches for changes to files in given directory, run task if changed
 gulp.task('watch', function() {
     gulp.watch(config.paths.html, ['html']);
@@ -78,4 +89,4 @@ gulp.task('watch', function() {
     gulp.watch(config.paths.css, ['css']);
 });
 
-gulp.task('default', ['html', 'js', 'css', 'lint', 'open', 'watch']); //run 'gulp' to run html and open tasks
+gulp.task('default', ['html', 'js', 'css', 'images', 'lint', 'open', 'watch']); //run 'gulp' to run html and open tasks
