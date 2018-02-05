@@ -5,7 +5,7 @@ $ = jQuery = require('jquery'); //access jquery thru '$' or 'jquery' word
 var React = require('react');
 var Home = require('./components/homepage');
 var About = require('./components/about/aboutPage');
-var Authors = require('./components/authors/authorPage');
+var AuthorPage = require('./components/authors/authorPage');
 var Header = require('./components/common/header');
 
 var App = React.createClass({
@@ -14,7 +14,7 @@ var App = React.createClass({
 
         switch(this.props.route) {
             case 'about': Child = About; break;
-            case 'authors': Child = Authors; break;
+            case 'authors': Child = AuthorPage; break;
             default: Child = Home;
         }
 
@@ -28,9 +28,9 @@ var App = React.createClass({
 });
 
 function render() {
-    console.log('render...');
+    // console.log('render...');
     var route = window.location.hash.substr(1);
-    console.log('route: ' + route);
+    // console.log('route: ' + route);
     React.render(<App route={route} />, document.getElementById('app'));
 }
 

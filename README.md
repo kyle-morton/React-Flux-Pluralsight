@@ -29,3 +29,28 @@ after components updates are flushed to DOM (not on init render), good for worki
 immediately before component is removed from DOM, good for cleanup.
 
 REM: when creating dynamic children (foreach of component instances), a key for each instance must be provided so React can monitor changes and update the correct instance.
+
+## Controller Views
+
+- top level component (components nested within in)
+- sets props of children (which immutable so it can't be chaned by them)
+- interacts with flux stores 
+NOTE: it's not recommended to nest controller views in other components (could cause performance issues with render updates)
+
+### Controller Views = Smart (keeps state), Regular Components = Dumb (receive props)
+Controller views can be thought of smart components that keep state for the view (or the entire app). Their render() function should pass whatever state they have into properties that can be used by Functional/Dumb components. These will render html markup using their properties which takes that work out of the controller view and makes the component reusable.
+
+## Prop Types 
+
+These are a good way to express what the given component EXPECTS in the property object (including property types) to work correctly. 
+
+### Prop Validation
+
+If a property passed into props is of a wrong type, an error will be logged to the console to make for easy debugging. 
+
+NOTE: this validation is not run in production (to optimize performance) so it should be used more for documenting your development. 
+
+
+### Mixins
+
+Good for cross-cutting concerns, i.e. sharing code between components.
