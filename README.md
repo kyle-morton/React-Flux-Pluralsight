@@ -2,6 +2,8 @@
 
 Following along with Pluralsight's 'Building Applications with React & Flux' course.
 
+Instructors source: https://github.com/coryhouse/react-flux-building-applications
+
 ## Lifecycle Methods
 
 ### componentWillMount() 
