@@ -62,3 +62,25 @@ If a property passed into props is of a wrong type, an error will be logged to t
 ### Mixins
 
 Good for cross-cutting concerns, i.e. sharing code between components.
+
+
+## React-Router 
+
+### Config
+
+with React Router, you can configure your app routing from a single location. 
+
+var routes = (
+  <Route name="app" path="/" handler={require('./components/app')}>
+    <DefaultRoute handler={require('./components/homePage')} />
+    <Route name="authors" handler={require('./components/authors/authorPage')} />
+    <Route name="about" handler={require('./components/about/aboutPage')} />
+  </Route>
+);
+
+### Links
+
+Any routes to components within your config can be referenced via Links. This allows you to reference these routes and not have to use a static href in your code. This means any updates to a path can happen in one place instead of every single place that link is used in your app.
+
+<Link to="about" className="btn btn-primary btn-lg">Learn more</Link>
+
