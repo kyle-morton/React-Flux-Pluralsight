@@ -1,40 +1,9 @@
-// 'use strict'; -> not using to overcome the global $/jQuery variable issue
-
-$ = jQuery = require('jquery'); //access jquery thru '$' or 'jquery' word
+"use strict";
 
 var React = require('react');
-var Home = require('./components/homepage');
-var About = require('./components/about/aboutPage');
-var AuthorPage = require('./components/authors/authorPage');
-var Header = require('./components/common/header');
+var Router = require('react-router');
+var routes = require('./routes');
 
-var App = React.createClass({
-    render: function() {
-        var Child; // which child component to render
-
-        switch(this.props.route) {
-            case 'about': Child = About; break;
-            case 'authors': Child = AuthorPage; break;
-            default: Child = Home;
-        }
-
-        return (
-            <div>
-                <Header />
-                <Child />
-            </div>
-        );
-    }
+Router.run(routes, function(Handler) {
+	React.render(<Handler/>, document.getElementById('app'));
 });
-
-function render() {
-    // console.log('render...');
-    var route = window.location.hash.substr(1);
-    // console.log('route: ' + route);
-    React.render(<App route={route} />, document.getElementById('app'));
-}
-
-window.addEventListener('hashchange', render);
-render();
-
-// React.render(<Home />, document.getElementById('app'));
