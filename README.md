@@ -70,6 +70,8 @@ Good for cross-cutting concerns, i.e. sharing code between components.
 
 with React Router, you can configure your app routing from a single location. 
 
+ 	
+~~~~
 var routes = (
   <Route name="app" path="/" handler={require('./components/app')}>
     <DefaultRoute handler={require('./components/homePage')} />
@@ -77,10 +79,12 @@ var routes = (
     <Route name="about" handler={require('./components/about/aboutPage')} />
   </Route>
 );
+~~~~
 
 ### Links
 
 Any routes to components within your config can be referenced via Links. This allows you to reference these routes and not have to use a static href in your code. This means any updates to a path can happen in one place instead of every single place that link is used in your app.
 
+~~~~
 <Link to="about" className="btn btn-primary btn-lg">Learn more</Link>
-
+~~~~
