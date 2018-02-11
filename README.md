@@ -83,8 +83,17 @@ var routes = (
 
 ### Links
 
-Any routes to components within your config can be referenced via Links. This allows you to reference these routes and not have to use a static href in your code. This means any updates to a path can happen in one place instead of every single place that link is used in your app.
-
+Any routes to components within your config can be referenced via Links. This allows you to reference these routes and not have to use a static <a> and href in your code. This means any updates to a path can happen in one place instead of every single place that link is used in your app.
 ~~~~
 <Link to="about" className="btn btn-primary btn-lg">Learn more</Link>
+~~~~
+
+### Redirects
+
+React Router allows you to create redirects from old path to new path. The below additions to the routes config will send any requests going to /about-us to /about (1st line), send any requests to the mispelled /authurs to /authors (2nd line), and send any requests to a sub-directory /about/* to the /about page (3rd line). 
+
+~~~~
+    <Redirect from="about-us" to="about" /> 
+    <Redirect from="authurs" to="authors" />
+    <Redirect from="about/*" to="about" />
 ~~~~
