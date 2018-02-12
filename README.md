@@ -105,6 +105,26 @@ Use the below methods to determine if page should be transitioned to (willTranst
 #### Note: See src/components/about/aboutPage.js for usage of these 2 static methods.
 
 ~~~ 
-willTransitionTo()
-willTransitionFrom()
+//this statics block is placed inside the component definition
+statics: {
+    willTransitionTo: function(transition, params, query, callback) {
+
+        //logic here will determine if this page can be transitioned to
+        if (!confirm('do you want to view this page?')) {
+            transition.abort(); //stop the transition
+        } else {
+            callback(); //allows transition to occur
+        }
+    },
+    willTransitionFrom: function(transition, component) {
+
+        //logic here will determine if this page can be transitioned from
+        if (!confirm('do you want to leave this page?')) {
+            transition.abort(); //stop the transition
+        } 
+
+        //if no abort(), request will go thru
+    }
+}
+
 ~~~
