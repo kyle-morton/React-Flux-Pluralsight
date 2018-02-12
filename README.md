@@ -81,6 +81,26 @@ var routes = (
 );
 ~~~~
 
+### Params & QueryStrings
+
+React Router will automatically place URL parameters and query strings in the props object for a component if configured in the <Route>.
+
+~~~
+<Route path"/course/:courseId" handler={Course}>
+
+//url like this:
+'/course/clean-code?module=3'
+
+//the components props will be auto-populated:
+var Course = React.createClass({
+    render: function() {
+        this.props.params.courseId; //'clean-code'
+        this.props.query.module; //'3'
+        this.props.query // '/course/clean-code/?module=3'
+    }
+});
+~~~
+
 ### Links
 
 Any routes to components within your config can be referenced via Links. This allows you to reference these routes and not have to use a static <a> and href in your code. This means any updates to a path can happen in one place instead of every single place that link is used in your app.
@@ -126,5 +146,18 @@ statics: {
         //if no abort(), request will go thru
     }
 }
+~~~
 
+### Locations (clean URLs)
+
+A single param in the Router.run function call (Router.HistoryLocation) can convert your urls from using the hash syntax (/#/about) to clean, HTML5 urls (/about). This also creates a cleaner history in the browser. 
+
+#### Note: this is not supported in IE prior to version 10. This config may also change in the 1.0 React-Router release.
+
+~~~
+//adding the Router.HistoryLocation param will convert urls from /#/about to /about
+Router.run(routes, Router.HistoryLocation,  
+function(Handler) {
+	React.render(<Handler/>, document.getElementById('app'));
+});
 ~~~
