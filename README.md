@@ -97,3 +97,14 @@ React Router allows you to create redirects from old path to new path. The below
     <Redirect from="authurs" to="authors" />
     <Redirect from="about/*" to="about" />
 ~~~~
+
+### Transitions
+
+Use the below methods to determine if page should be transitioned to (willTranstionTo()) or run checks before navigating away from a view (willTransitionFrom()). These are useful for checking if a user is logged in, has a given permission, checking if form is incomplete, etc. These can be very useful for stopping the user from navigating if a certain condition is met.
+
+#### Note: See src/components/about/aboutPage.js for usage of these 2 static methods.
+
+~~~ 
+willTransitionTo()
+willTransitionFrom()
+~~~
