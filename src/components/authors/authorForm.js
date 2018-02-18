@@ -1,36 +1,36 @@
 "use strict";
 
 var React = require('react');
+var Input = require('../common/textInput');
 
 var AuthorForm = React.createClass({
+	// propTypes: {
+	// 	author:	React.PropTypes.object.isRequired,
+	// 	onSave:	React.PropTypes.func.isRequired,
+	// 	onChange: React.PropTypes.func.isRequired,
+	// 	errors: React.PropTypes.object
+	// },
+
 	render: function() {
 		return (
-            <form>
-                <h1>Manage Author</h1>
-                <label htmlFor="firstName">First Name</label>
-                <input type="text"
-                    name="firstName"
-                    className="form-control"
-                    placeholder="first name"
-                    ref="firstName"
-                    value={this.props.author.firstName} 
-                    onChange={this.props.onChange}
-                    />
-                <br />
+			<form>
+				<h1>Manage Author</h1>
+				<Input
+					name="firstName"
+					label="First Name"
+					value={this.props.author.firstName}
+					onChange={this.props.onChange}
+					error={this.props.errors.firstName} />
 
-                <label htmlFor="lastName">Last Name</label>
-                <input type="text"
-                    name="lastName"
-                    className="form-control"
-                    placeholder="last name"
-                    ref="lastName"
-                    value={this.props.author.lastName} 
-                    onChange={this.props.onChange}
-                    />
-                <br />
+				<Input
+					name="lastName"
+					label="Last Name"
+					value={this.props.author.lastName}
+					onChange={this.props.onChange}
+					error={this.props.errors.lastName} />
 
-                <input type="submit" value="Save" className="btn btn-default" />
-            </form>
+				<input type="submit" value="Save" className="btn btn-default" onClick={this.props.onSave} />
+			</form>
 		);
 	}
 });

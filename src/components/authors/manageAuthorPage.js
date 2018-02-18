@@ -7,7 +7,9 @@ var AuthorForm = require('./AuthorForm');
 var ManageAuthorPage = React.createClass({
     getInitialState: function() {
         return {
-            author: { id: '', firstName: '', lastName: ''}
+            author: { id: '', firstName: '', lastName: ''},
+            errors: {},
+			dirty: false
         };
     },
     setAuthorState: function(event) { //called for every key press
@@ -21,6 +23,7 @@ var ManageAuthorPage = React.createClass({
             <AuthorForm 
                 author={this.state.author}
                 onChange={this.setAuthorState}
+                errors={this.state.errors} 
             />
 		);
 	}
