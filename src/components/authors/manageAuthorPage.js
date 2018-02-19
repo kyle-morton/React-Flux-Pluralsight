@@ -69,8 +69,14 @@ var ManageAuthorPage = React.createClass({
             return;
         }
 
-        //send new author to author actions to start Flux process
-        AuthorActions.createAuthor(this.state.author);
+        //send author to author actions to start Flux process
+
+        if (this.state.author.id) {
+            AuthorActions.updateAuthor(this.state.author);
+        } else {
+            AuthorActions.createAuthor(this.state.author);
+        }
+        
         Toastr.success('Author Saved...');
         this.transitionTo('authors'); //transition to authors after save
         this.setState({dirty: false});

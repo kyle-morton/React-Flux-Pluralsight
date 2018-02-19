@@ -51,6 +51,12 @@ Dispatcher.register(function(action) {
             _authors.push(action.author); //pushing new author to private array
             AuthorStore.emitChange(); //tell components to update
             break;
+        case ActionTypes.UPDATE_AUTHOR:
+            var existingAuthor = _.find(_authors, {id: action.author.id});
+            var index = _.indexOf(_authors, existingAuthor);
+            _authors.splice(index, 1, action.author);
+            AuthorStore.emitChange();
+            break;
         default:
             //nothing to do
             break;
