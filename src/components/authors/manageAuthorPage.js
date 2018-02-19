@@ -3,7 +3,8 @@
 var React = require('react');
 var Router = require('react-router');
 var AuthorForm = require('./AuthorForm');
-var AuthorApi = require('../../api/authorApi');
+var AuthorActions = require('../../actions/authorActions');
+var AuthorStore = require('../../stores/authorStore');
 var Toastr = require('toastr');
 
 //REM: Controller view is the page itself that handles all child components
@@ -11,6 +12,14 @@ var ManageAuthorPage = React.createClass({
     mixins: [
         Router.Navigation //like using statements
     ],
+    componentWillMount: function() {
+        //this gets called before component gets rendered
+
+        var authorId = this.props.params.id; //params added to props via react-router -> /author/:id
+        if (authorId) {
+            this.setState({author: AuthorStore.getAuthorById(authorId)});
+        }
+    },
 	statics: {
         willTransitionFrom: function(transition, component) {
 
@@ -60,18 +69,11 @@ var ManageAuthorPage = React.createClass({
             return;
         }
 
-        AuthorApi.saveAuthor(this.state.author); //save current state's author to API list
+        //send new author to author actions to start Flux process
+        AuthorActions.createAuthor(this.state.author);
         Toastr.success('Author Saved...');
         this.transitionTo('authors'); //transition to authors after save
         this.setState({dirty: false});
-    },
-    componentWillMount: function() {
-        //this gets called before component gets rendered
-
-        var authorId = this.props.params.id; //params added to props via react-router -> /author/:id
-        if (authorId) {
-            this.setState({author: AuthorApi.getAuthorById(authorId)});
-        }
     },
 	render: function() {
 		return (
