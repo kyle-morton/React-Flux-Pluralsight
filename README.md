@@ -199,7 +199,6 @@ Encapsulates all events. Triggered by user interactions or the server. Once an a
 See below for an example action payload when a user is saved. A payload will only have 2 properties: Type & Data.
 
 ~~~
-
 {
     type: USER_SAVED, //action type
     data: { //payload data
@@ -207,7 +206,6 @@ See below for an example action payload when a user is saved. A payload will onl
         lastName: 'House'
     }
 }
-
 ~~~
 
 #### Dispatcher 
@@ -273,4 +271,6 @@ Not quite.
 
 Differs in 2 ways:
 1. Every payload is dispatched to all registered callbacks.
+**This means that each registered callback will see all payloads for all action types (even if they didn't subscribe to it specifically).
+
 2. Callbacks can wait for other callbacks to finish (this is what the waitFor() function is used for).
