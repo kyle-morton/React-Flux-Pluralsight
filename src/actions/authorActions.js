@@ -26,7 +26,18 @@ var AuthorActions = {
             author: updatedAuthor
         });
 
+    },
+    deleteAuthor: function(id) {
+        AuthorApi.deleteAuthor(id);
+        
+        Dispatcher.dispatch({
+            actionType: ActionTypes.DELETE_AUTHOR,
+            id: id
+        });
     }
+    //REM: since these will be async methods, you can have 2 events fire 
+    //1st -> deleteAuthor - shows the loading UI
+    //2nd -> deletedAuthor - shows confirmation (after ajax call completes)
 };
 
 module.exports = AuthorActions;

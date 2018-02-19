@@ -50290,7 +50290,18 @@ var AuthorActions = {
             author: updatedAuthor
         });
 
+    },
+    deleteAuthor: function(id) {
+        AuthorApi.deleteAuthor(id);
+        
+        Dispatcher.dispatch({
+            actionType: ActionTypes.DELETE_AUTHOR,
+            id: id
+        });
     }
+    //REM: since these will be async methods, you can have 2 events fire 
+    //1st -> deleteAuthor - shows the loading UI
+    //2nd -> deletedAuthor - shows confirmation (after ajax call completes)
 };
 
 module.exports = AuthorActions;
@@ -50510,15 +50521,23 @@ module.exports = AuthorForm;
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
+var AuthorActions = require('../../actions/authorActions');
+var toastr = require('toastr');
 
 var AuthorList = React.createClass({displayName: "AuthorList",
     propTypes: {
         authors: React.PropTypes.array.isRequired //array is required to be passed in props
     },
+    deleteAuthor: function(id, event) {
+        event.preventDefault();
+        AuthorActions.deleteAuthor(id);
+        toastr.success('Author Deleted...');
+    },
     render: function() {
         var createAuthorRow = function(author) {
             return (
                 React.createElement("tr", {key: author.id}, 
+                    React.createElement("td", null, React.createElement("a", {href: "#", onClick: this.deleteAuthor.bind(this, author.id)}, "Delete")), 
                     React.createElement("td", null, React.createElement(Link, {to: "manageAuthor", params: {id: author.id}}, author.id)), 
 					React.createElement("td", null, author.firstName, " ", author.lastName)
                 )
@@ -50528,6 +50547,7 @@ var AuthorList = React.createClass({displayName: "AuthorList",
             React.createElement("div", null, 
                 React.createElement("table", {className: "table"}, 
                     React.createElement("thead", null, 
+                        React.createElement("td", null), 
                         React.createElement("td", null, "ID"), 
                         React.createElement("td", null, "Name")
                     ), 
@@ -50542,7 +50562,7 @@ var AuthorList = React.createClass({displayName: "AuthorList",
 
 module.exports = AuthorList;
 
-},{"react":202,"react-router":33}],212:[function(require,module,exports){
+},{"../../actions/authorActions":204,"react":202,"react-router":33,"toastr":203}],212:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -50553,10 +50573,21 @@ var AuthorStore = require('../../stores/authorStore');
 var AuthorList = require('./authorList');
 
 var AuthorPage = React.createClass({displayName: "AuthorPage",
+    componentWillMount: function() {
+        //any change in store, call onChange method
+        AuthorStore.addChangeListener(this._onChange);
+    },
+    componentWillUnmount: function() {
+        //any change in store, call onChange method
+        AuthorStore.removeChangeListener(this._onChange);
+    },
     getInitialState: function() {
         return {
             authors: AuthorStore.getAllAuthors()
         };
+    },
+    _onChange: function() {
+        this.setState({authors: AuthorStore.getAllAuthors() });
     },
     render: function() {
         return (
@@ -50789,7 +50820,8 @@ var keyMirror = require('react/lib/keyMirror');
 module.exports = keyMirror({
     INITIALIZE: null,
     CREATE_AUTHOR: null,
-    UPDATE_AUTHOR: null
+    UPDATE_AUTHOR: null,
+    DELETE_AUTHOR: null
 });
 
 },{"react/lib/keyMirror":187}],219:[function(require,module,exports){
@@ -50898,6 +50930,12 @@ Dispatcher.register(function(action) {
             var existingAuthor = _.find(_authors, {id: action.author.id});
             var index = _.indexOf(_authors, existingAuthor);
             _authors.splice(index, 1, action.author);
+            AuthorStore.emitChange();
+            break;
+        case ActionTypes.DELETE_AUTHOR:
+            _.remove(_authors, function(author) {
+                return action.id === author.id;
+            });
             AuthorStore.emitChange();
             break;
         default:
