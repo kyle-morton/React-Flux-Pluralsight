@@ -4,6 +4,7 @@ var React = require('react');
 var Router = require('react-router');
 var CourseForm = require('./courseForm');
 var CourseActions = require('../../actions/courseActions');
+var AuthorStore = require('../../stores/authorStore');
 var CourseStore = require('../../stores/courseStore');
 var Toastr = require('toastr');
 
@@ -14,10 +15,13 @@ var ManageCoursePage = React.createClass({
     ],
     componentWillMount: function() {
         //this gets called before component gets rendered
-
         var courseId = this.props.params.id; //params added to props via react-router -> /author/:id
+        
         if (courseId) {
-            this.setState({course: CourseStore.getCourseById(courseId)});
+            this.setState({
+                course: CourseStore.getCourseById(courseId)
+            });
+            console.log("course: " + JSON.stringify(this.state.course));
         }
     },
 	statics: {
@@ -34,6 +38,7 @@ var ManageCoursePage = React.createClass({
     getInitialState: function() {
         return {
             course: { id: '', title: '', author: '', category: '', length: ''},
+            authors: AuthorStore.getAllAuthors(),
             errors: {},
 			dirty: false
         };
@@ -80,6 +85,8 @@ var ManageCoursePage = React.createClass({
         }
 
         //send course to course actions to start Flux process
+        var course = this.state.course;
+        console.log('course: ' + course + "/" + JSON.stringify(course));
 
         if (this.state.course.id) {
             CourseActions.updateCourse(this.state.course);
@@ -95,6 +102,7 @@ var ManageCoursePage = React.createClass({
 		return (
             <CourseForm 
                 course={this.state.course}
+                authors={this.state.authors}
                 onSave={this.saveCourse}
                 onChange={this.setCourseState}
                 errors={this.state.errors} 
