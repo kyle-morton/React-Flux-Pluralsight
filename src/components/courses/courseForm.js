@@ -36,14 +36,14 @@ var CourseForm = React.createClass({
                     
                 <Input
 					name="category"
-					label="category"
+					label="Category"
 					value={this.props.course.category}
 					onChange={this.props.onChange}
 					error={this.props.errors.category} />
 
                 <Input
 					name="length"
-					label="length"
+					label="Length"
 					value={this.props.course.length}
 					onChange={this.props.onChange}
 					error={this.props.errors.length} />

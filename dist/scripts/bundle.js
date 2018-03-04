@@ -50558,18 +50558,19 @@ var About = React.createClass({displayName: "About",
         willTransitionTo: function(transition, params, query, callback) {
 
             //logic here will determine if this page can be transitioned to
-            if (!confirm('do you want to view this page?')) {
-                transition.abort(); //stop the transition
-            } else {
-                callback(); //allows transition to occur
-            }
+            // if (!confirm('do you want to view this page?')) {
+            //     transition.abort(); //stop the transition
+            // } else {
+            //     callback(); //allows transition to occur
+            // }
+            callback();
         },
         willTransitionFrom: function(transition, component) {
 
             //logic here will determine if this page can be transitioned from
-            if (!confirm('do you want to leave this page?')) {
-                transition.abort(); //stop the transition
-            } 
+            // if (!confirm('do you want to leave this page?')) {
+            //     transition.abort(); //stop the transition
+            // } 
 
             //if no abort(), request will go thru
         }
@@ -50898,8 +50899,9 @@ var SelectInput = React.createClass({displayName: "SelectInput",
           wrapperClass += " " + 'has-error';
         }
         var createOption = function(option) {
+            console.log('option: ' + JSON.stringify(option));
             return (
-                React.createElement("option", {value: option[this.props.optionValue]}, option[this.props.optionValue])
+                React.createElement("option", {value: option[this.props.optionValue]}, option[this.props.optionDisplay])
             );
         };
         return (
@@ -50912,8 +50914,10 @@ var SelectInput = React.createClass({displayName: "SelectInput",
                         ref: this.props.name, 
                         onChange: this.props.onChange, 
                         value: this.props.value}, 
+                        React.createElement("option", null), 
                         this.props.options.map(createOption, this)
-                    )
+                    ), 
+                    React.createElement("div", {className: "input"}, this.props.error)
                 )
             )    
         );
@@ -51002,14 +51006,14 @@ var CourseForm = React.createClass({displayName: "CourseForm",
                     
                 React.createElement(Input, {
 					name: "category", 
-					label: "category", 
+					label: "Category", 
 					value: this.props.course.category, 
 					onChange: this.props.onChange, 
 					error: this.props.errors.category}), 
 
                 React.createElement(Input, {
 					name: "length", 
-					label: "length", 
+					label: "Length", 
 					value: this.props.course.length, 
 					onChange: this.props.onChange, 
 					error: this.props.errors.length}), 
@@ -51139,16 +51143,15 @@ var ManageCoursePage = React.createClass({displayName: "ManageCoursePage",
             this.setState({
                 course: CourseStore.getCourseById(courseId)
             });
-            console.log("course: " + JSON.stringify(this.state.course));
         }
     },
 	statics: {
         willTransitionFrom: function(transition, component) {
 
 			//if any of form filled out, check if they want to leave 1st
-            if (component.state.dirty && !confirm('leave without saving?')) {
-                transition.abort(); //stop the transition
-            } 
+            // if (component.state.dirty && !confirm('leave without saving?')) {
+            //     transition.abort(); //stop the transition
+            // } 
 
             //if no abort(), request will go thru
         }
@@ -51156,7 +51159,12 @@ var ManageCoursePage = React.createClass({displayName: "ManageCoursePage",
     getInitialState: function() {
         return {
             course: { id: '', title: '', author: '', category: '', length: ''},
-            authors: AuthorStore.getAllAuthors(),
+            authors: AuthorStore.getAllAuthors().map(function(author) {
+               return {
+                   'id': author.id,
+                   'name': author.firstName + ' ' + author.lastName
+               };
+            }),
             errors: {},
 			dirty: false
         };
@@ -51204,7 +51212,13 @@ var ManageCoursePage = React.createClass({displayName: "ManageCoursePage",
 
         //send course to course actions to start Flux process
         var course = this.state.course;
-        console.log('course: ' + course + "/" + JSON.stringify(course));
+
+        //update course with full author object (instead of just id)
+        var author = AuthorStore.getAuthorById(course.author);
+        course.author = {
+            "id": author.id,
+            "name": author.firstName + ' ' + author.lastName
+        };
 
         if (this.state.course.id) {
             CourseActions.updateCourse(this.state.course);

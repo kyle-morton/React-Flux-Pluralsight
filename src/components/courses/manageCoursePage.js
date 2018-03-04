@@ -21,16 +21,15 @@ var ManageCoursePage = React.createClass({
             this.setState({
                 course: CourseStore.getCourseById(courseId)
             });
-            console.log("course: " + JSON.stringify(this.state.course));
         }
     },
 	statics: {
         willTransitionFrom: function(transition, component) {
 
 			//if any of form filled out, check if they want to leave 1st
-            if (component.state.dirty && !confirm('leave without saving?')) {
-                transition.abort(); //stop the transition
-            } 
+            // if (component.state.dirty && !confirm('leave without saving?')) {
+            //     transition.abort(); //stop the transition
+            // } 
 
             //if no abort(), request will go thru
         }
@@ -38,7 +37,12 @@ var ManageCoursePage = React.createClass({
     getInitialState: function() {
         return {
             course: { id: '', title: '', author: '', category: '', length: ''},
-            authors: AuthorStore.getAllAuthors(),
+            authors: AuthorStore.getAllAuthors().map(function(author) {
+               return {
+                   'id': author.id,
+                   'name': author.firstName + ' ' + author.lastName
+               };
+            }),
             errors: {},
 			dirty: false
         };
@@ -86,7 +90,13 @@ var ManageCoursePage = React.createClass({
 
         //send course to course actions to start Flux process
         var course = this.state.course;
-        console.log('course: ' + course + "/" + JSON.stringify(course));
+
+        //update course with full author object (instead of just id)
+        var author = AuthorStore.getAuthorById(course.author);
+        course.author = {
+            "id": author.id,
+            "name": author.firstName + ' ' + author.lastName
+        };
 
         if (this.state.course.id) {
             CourseActions.updateCourse(this.state.course);

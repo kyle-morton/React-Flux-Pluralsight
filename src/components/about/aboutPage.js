@@ -7,18 +7,19 @@ var About = React.createClass({
         willTransitionTo: function(transition, params, query, callback) {
 
             //logic here will determine if this page can be transitioned to
-            if (!confirm('do you want to view this page?')) {
-                transition.abort(); //stop the transition
-            } else {
-                callback(); //allows transition to occur
-            }
+            // if (!confirm('do you want to view this page?')) {
+            //     transition.abort(); //stop the transition
+            // } else {
+            //     callback(); //allows transition to occur
+            // }
+            callback();
         },
         willTransitionFrom: function(transition, component) {
 
             //logic here will determine if this page can be transitioned from
-            if (!confirm('do you want to leave this page?')) {
-                transition.abort(); //stop the transition
-            } 
+            // if (!confirm('do you want to leave this page?')) {
+            //     transition.abort(); //stop the transition
+            // } 
 
             //if no abort(), request will go thru
         }

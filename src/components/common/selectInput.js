@@ -20,8 +20,9 @@ var SelectInput = React.createClass({
           wrapperClass += " " + 'has-error';
         }
         var createOption = function(option) {
+            console.log('option: ' + JSON.stringify(option));
             return (
-                <option value={option[this.props.optionValue]}>{option[this.props.optionValue]}</option>
+                <option value={option[this.props.optionValue]}>{option[this.props.optionDisplay]}</option>
             );
         };
         return (
@@ -34,8 +35,10 @@ var SelectInput = React.createClass({
                         ref={this.props.name}
                         onChange={this.props.onChange}
                         value={this.props.value}>
+                        <option></option>
                         {this.props.options.map(createOption, this)}
                     </select>
+                    <div className="input">{this.props.error}</div>
                 </div>
             </div>    
         );
